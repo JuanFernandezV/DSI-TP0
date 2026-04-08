@@ -1,0 +1,59 @@
+@startuml
+participant Estado[
+=Estado
+----
+----
+calcPrecio()
+]
+
+participant Prenda[
+=Prenda
+----
+Tipo
+Precio
+Estado
+----
+calcPrecio()
+MostrarTipoPrenda()
+]
+
+participant Item[
+=Item
+----
+Prenda
+Cantidad
+----
+calcPrecio()
+]
+
+participant Venta[
+=Venta
+----
+Productos
+Fecha
+MetodoDePago
+----
+CalcGanancia()
+]
+
+participant Metodo[
+=Metodo
+----
+----
+calcGanancia()
+]
+
+participant Ventas[
+=Ventas
+----
+Ventas
+----
+calcGanancia()
+]
+
+Prenda -> Estado : Estado
+Item -> Prenda : Prenda
+Venta -> Item : Item
+Venta -> Metodo : Metodo
+Ventas -> Venta : Venta
+@enduml
