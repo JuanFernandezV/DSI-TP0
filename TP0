@@ -1,0 +1,88 @@
+/*
+    Requerimientos:
+    1. Se debe determinar el precio de venta de una prenda segun reqs. (2) y (3)
+    2. El sistema debe almacenar y mostrar el tipo de prenda (sacos, camisas, pantalones)
+    3. Se debe saber el estado de una prenda.
+    4. El sistema debe permitir cargar una venta.
+    5. El sistema debe permitir cargar las ventas realizadas en un dia determinado.
+    6. El sistema debe calcular las ganancias totales de un dia determinado.
+*/
+
+// no se crean metodos de abm (ni setters y getters) ya que no se estiman necesarios para el ejercicio, se asume que se pueden cargar las ventas y prendas sin problemas.
+class Prenda {
+    var tipo
+    var precio
+    var estado
+
+    method calcPrecio(){
+        return estado.calcPrecio(precio)
+    }
+
+    method mostrarTipoPrenda(){
+        return tipo
+    }
+}
+// se crea un objeto por cada tipo de estado para que determinen el precio
+Object Nuevo {
+    method calcPrecio(precio){
+        return precio
+    }
+}
+
+Object Promocion{
+    // se crea la variable descuento que se entiende es fija segun el usuario.
+    var descuento
+    method calcPrecio(precio){
+        return precio - descuento
+    }
+}
+
+Object Liquidacion{
+    method calcPrecio(precio){
+        return precio * 0.5
+    }
+}
+// Venta: registra la venta entera, por ejemplo: 2 pantalones, 4 camisas y determina el precio
+class Venta {
+    // productos es un array que almacena el objeto item.
+    var productos = []
+    var fecha
+    // metodo de pago actua como el objeto 'estado' de la prenda, segun su valor calcula el precio de venta
+    var metodoPago
+    method calcGanancia(){
+        return metodoPago.calcGanancia(productos)
+    }
+}
+
+Object Efectivo {
+    method calcGanancia(productos){
+        return productos.sum(item => item.calcPrecio())
+    }
+}
+
+Object Tarjeta {
+    // se estima que el recargo es fijo segun el usuario
+    var recargo
+    var cantidadCuotas
+    method calcGanancia(productos){
+        // se podria delegar para mayor abstraccion en un metodo aparte pero se deja asi para no extender el codigo
+        return productos.sum(item => item.calcPrecio()) + (cantidadCuotas * recargo + 0.01 * productos.sum(item => item.calcPrecio()))
+    }
+}
+
+// Item: es una clase que asocia una prenda con la cantidad vendida.
+class Item {
+    var prenda
+    var cantidad
+    method calcPrecio(){
+        return prenda.calcPrecio() * cantidad
+    }
+}
+
+// Ventas: es un array que almacena las ventas instanciadas (objetos venta).
+class Ventas {
+    var ventas = []
+    method calcGanancia(){
+        return ventas.sum(venta => venta.calcGanancia())
+    }
+}
