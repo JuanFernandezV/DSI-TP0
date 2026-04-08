@@ -22,23 +22,29 @@ class Prenda {
         return tipo
     }
 }
-// se crea un objeto por cada tipo de estado para que determinen el precio
-Object Nuevo {
+
+// clase abstracta para el diagrama
+class Estado{
     method calcPrecio(precio){
+    }
+}
+// se crea un objeto por cada tipo de estado para que determinen el precio
+Object Nuevo inherits Estado{
+    override method calcPrecio(precio){
         return precio
     }
 }
 
-Object Promocion{
+Object Promocion inherits Estado{
     // se crea la variable descuento que se entiende es fija segun el usuario.
     var descuento
-    method calcPrecio(precio){
+    override method calcPrecio(precio){
         return precio - descuento
     }
 }
 
-Object Liquidacion{
-    method calcPrecio(precio){
+Object Liquidacion inherits Estado{
+    override method calcPrecio(precio){
         return precio * 0.5
     }
 }
@@ -54,17 +60,22 @@ class Venta {
     }
 }
 
-Object Efectivo {
+class Metodo{
     method calcGanancia(productos){
+    }
+}
+
+Object Efectivo inherits Metodo {
+    override method calcGanancia(productos){
         return productos.sum(item => item.calcPrecio())
     }
 }
 
-Object Tarjeta {
+Object Tarjeta inherits Metodo {
     // se estima que el recargo es fijo segun el usuario
     var recargo
     var cantidadCuotas
-    method calcGanancia(productos){
+    override method calcGanancia(productos){
         // se podria delegar para mayor abstraccion en un metodo aparte pero se deja asi para no extender el codigo
         return productos.sum(item => item.calcPrecio()) + (cantidadCuotas * recargo + 0.01 * productos.sum(item => item.calcPrecio()))
     }
